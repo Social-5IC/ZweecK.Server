@@ -1,0 +1,23 @@
+{
+  "name": "social-zucco-server",
+  "version": "1.0.0",
+  "description": "SocialZucco project server",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GiacomoGuidotto/SocialZucco.Server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GiacomoGuidotto/SocialZucco.Server/issues"
+  },
+  "homepage": "https://github.com/GiacomoGuidotto/SocialZucco.Server#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {}
+}
