@@ -1,1 +1,1 @@
-# SocialZucco.Server
+# ZweecK.Server

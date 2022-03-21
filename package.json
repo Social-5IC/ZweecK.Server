@@ -1,5 +1,5 @@
 {
-  "name": "social-zucco-server",
+  "name": "zweeck",
   "version": "1.0.0",
   "description": "SocialZucco project server",
   "main": "src/index.js",
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/GiacomoGuidotto/SocialZucco.Server#readme",
   "dependencies": {
-    "express": "^4.17.3"
-  },
-  "devDependencies": {}
+    "express": "^4.17.3",
+    "mysql": "^2.18.1"
+  }
 }
