@@ -13,4 +13,10 @@ const connectionCallback = function (err) {
 
 exports.query = function (query, params) {
   connection.connect(connectionCallback);
+  return new Promise((resolve, reject) => {
+        connection.query(query, params ?? [], (error, results, fields) => {
+            if (error) reject(`Query failed: [${error.message}]`)
+            resolve(results)
+        })
+    });
 };
