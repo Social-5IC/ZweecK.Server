@@ -3,7 +3,7 @@ const {badParameters, uniqueViolation} = require("../specification/error-cases")
 
 // ==== create user in "users" table ====================================================================================
 exports.createUser = async (username, mail, password, name, surname, dob, sex) => {
-    if (!userName || !userSurname) return badParameters.errorCode;
+    if (!username || !mail || !password || !name || !surname || !dob || !sex ) return badParameters.errorCode;
     try {
         //si verifica solo l'esistenza della mail (la tabella ha la constraint UNIQUE sulla colonna mail)
         //sostituire con procedure
