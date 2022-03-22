@@ -6,9 +6,10 @@
     - logIn:
       Mail, Password -> Token
 - DELETE
-    - logOut
+    - logOut:
       Token -> null
 
+<!-- User Done -->
 ##User
 - POST 
   - User Create User:
