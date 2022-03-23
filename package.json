@@ -18,6 +18,7 @@
   "homepage": "https://github.com/GiacomoGuidotto/SocialZucco.Server#readme",
   "dependencies": {
     "express": "^4.17.3",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "password-hash": "^1.2.2"
   }
 }

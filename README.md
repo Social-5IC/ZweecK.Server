@@ -1,6 +1,7 @@
 # ZweecK.Server
 
 
+<!-- Auth Done -->
 ##Auth
 - POST
     - logIn:
@@ -8,6 +9,7 @@
 - DELETE
     - logOut:
       Token -> null
+
 
 <!-- User Done -->
 ##User
@@ -36,16 +38,22 @@
 - DELETE
   - Remove post:
         Token, postId -> null
-  
 
+    
+<!-- Likes Done -->
 ##Likes
 - POST 
   - Add like:
       postId, Token -> null
+- GET   
+    - All like  e
+      Token -> idPost, idLike
 - DELETE 
   - remove like
       postID, Token -> null
 
+
+<!-- Categories done -->
 ##Categories
 - GET
   - All categories
