@@ -121,6 +121,9 @@ exports.createLike = async (token, idPost) => {
         );
 
         if (userId.length) return uniqueViolation.errorCode;
+        
+        //TODO controlla se esiste gia il like ( input: UserId, PostId)
+        
         return await dbModule.query(
             "", //TODO inserisce un nuovo like
             [userId, idPost]
