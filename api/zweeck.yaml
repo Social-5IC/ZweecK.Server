@@ -1,0 +1,293 @@
+openapi: 3.0.3
+info:
+  title: ZweecK
+  version: 1.0.0
+  description: |
+    ZweecK REST API, for the support of the ZweecK flutter application.
+paths:
+  /auth:
+    post:
+      summary: Login
+      parameters:
+        - name: username
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      summary: Logout
+      parameters:
+        - $ref: "#/components/parameters/token"
+      responses:
+        200:
+          description: Successfully logged out
+        400:
+          $ref: "#/components/responses/400"
+  /user:
+    post:
+      summary: Create user
+      parameters:
+        - name: username
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: mail
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: surname
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: sex
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: language
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: birth
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: advertiser
+          in: header
+          required: true
+          schema:
+            type: boolean
+      responses:
+        200:
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        400:
+          $ref: "#/components/responses/400"
+    get:
+      summary: Retrieve user
+      parameters:
+        - $ref: "#/components/parameters/token"
+      responses:
+        200:
+          description: Successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  name:
+                    type: string
+                  surname:
+                    type: string
+                  sex:
+                    type: string
+                  language:
+                    type: string
+                  birth:
+                    type: string
+                  mail:
+                    type: string
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      summary: Delete
+      parameters:
+        - $ref: "#/components/parameters/token"
+      responses:
+        200:
+          description: Successfully deleted
+        400:
+          $ref: "#/components/responses/400"
+  /post:
+    post:
+      summary: Create post
+      parameters:
+        - $ref: "#/components/parameters/token"
+        - name: image
+          in: header
+          required: true
+          schema:
+            type: string
+            format: base64
+        - name: description
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: tags
+          in: header
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: link
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+        400:
+          $ref: "#/components/responses/400"
+    get:
+      summary: Retrieve your, following, relevant post
+      parameters:
+        - $ref: "#/components/parameters/token"
+        - name: filter
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 1
+            enum:
+              - Y
+              - F
+              - R
+      responses:
+        200:
+          description: Successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  date:
+                    type: string
+                  image:
+                    type: string
+                  views:
+                    type: number
+                  description:
+                    type: string
+                  link:
+                    type: string
+                    required: false
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  likes:
+                    type: number
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      summary: Delete post
+      parameters:
+        - $ref: "#/components/parameters/token"
+        - name: post
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully deleted
+        400:
+          $ref: "#/components/responses/400"
+  /like:
+    post:
+      summary: Like
+      parameters:
+        - $ref: "#/components/parameters/token"
+        - name: post
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully liked
+        400:
+          $ref: "#/components/responses/400"
+    delete:
+      summary: Drop like
+      parameters:
+        - $ref: "#/components/parameters/token"
+        - name: post
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully dropped
+        400:
+          $ref: "#/components/responses/400"
+
+
+
+
+components:
+  responses:
+    400:
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              timestamp:
+                type: string
+              error:
+                type: number
+              message:
+                type: string
+  parameters:
+    token:
+      name: token
+      in: header
+      required: true
+      schema:
+        type: string
