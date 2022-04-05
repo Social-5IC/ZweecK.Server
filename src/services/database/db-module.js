@@ -6,17 +6,18 @@ const connection = mysql.createConnection({
   database: "zweeck",
 });
 
-const connectionCallback = function (err) {
-  if (err) console.error("Error connecting: ", err.stack);
-  console.log("connected");
-};
-
 exports.query = function (query, params) {
-  connection.connect(connectionCallback);
   return new Promise((resolve, reject) => {
-        connection.query(query, params ?? [], (error, results) => {
-            if (error) reject(`Query failed: [${error.message}]`)
-            resolve(results)
-        })
+    // open connection for a query
+    connection.connect((error) => {
+      if (error) reject(`Query failed: [${error.message}]`);
     });
+    // execute query
+    connection.query(query, params ?? [], (error, results) => {
+      if (error) reject(`Query failed: [${error.message}]`);
+      resolve(results);
+    });
+    // close connection for the query
+    connection.end();
+  });
 };

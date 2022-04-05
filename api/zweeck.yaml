@@ -9,7 +9,7 @@ paths:
     post:
       summary: Login
       parameters:
-        - name: username
+        - name: mail
           in: header
           required: true
           schema:
@@ -213,7 +213,6 @@ paths:
                     type: string
                   link:
                     type: string
-                    required: false
                   tags:
                     type: array
                     items:
