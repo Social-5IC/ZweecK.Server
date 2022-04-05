@@ -13,7 +13,7 @@ const port = 3000;
 const app = express();
 app.use(express.json());
 
-// ==== LOGIN user ==================================================================================================
+// ==== LOGIN user =====================================================================================================
 app.post("/auth", async (req, res) => {
     const queryResult = await dbService.logIn(
         req.get("mail"),
@@ -51,7 +51,7 @@ app.post("/auth", async (req, res) => {
     );
 });
 
-// ==== LOGOUT user ==================================================================================================
+// ==== LOGOUT user ====================================================================================================
 app.delete("/auth", async (req, res) => {
     const queryResult = await dbService.logOut(req.get("token"));
 
@@ -239,7 +239,7 @@ app.post("/likes", async (req, res) => {
     );
 });
 
-// ==== GET likes =======================================================================================================
+// ==== GET likes ======================================================================================================
 app.get("/likes", async (req, res) => {
     const queryResult = await dbService.getUserInfo(req.get("token"));
 
@@ -290,6 +290,41 @@ app.delete("/likes", async (req, res) => {
             break;
         default:
             res.status(200);
+            break;
+    }
+
+    console.log(
+        `
+    ==================================================
+    ${req.method} ${req.url} HTTP/${req.httpVersion}
+    
+    Headers:
+    ${JSON.stringify(req.headers)}
+    
+    Requests body:
+    ${req.body}
+    ==================================================`
+    );
+});
+
+// ==== GET likes ======================================================================================================
+app.get("/categories", async (req, res) => {
+    const queryResult = await dbService.getCategories(req.get("token"));
+
+    switch (queryResult) {
+        case undefined:
+            res.status(500).json({error: internalError.description});
+            break;
+        case badParameters.errorCode:
+            res.status(400).json({error: badParameters.description});
+            break;
+        case uniqueViolation.errorCode:
+            res.status(406).json({error: uniqueViolation.description});
+            break;
+        default:
+            res.json({
+                token: queryResult,
+            });
             break;
     }
 
