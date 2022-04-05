@@ -90,6 +90,7 @@ app.post("/user", async (req, res) => {
     const queryResult = await dbService.createUser(
         req.get("name"),
         req.get("surname"),
+        req.get("username"),
         req.get("mail"),
         req.get("password"),
         req.get("dob"),
@@ -165,6 +166,116 @@ app.get("/user", async (req, res) => {
 
 // ==== DELETE user ====================================================================================================
 app.delete("/user", async (req, res) => {
+    const queryResult = await dbService.deleteUser(req.get("token"));
+
+    switch (queryResult) {
+        case undefined:
+            res.status(500).json({error: internalError.description});
+            break;
+        case badParameters.errorCode:
+            res.status(400).json({error: badParameters.description});
+            break;
+        case uniqueViolation.errorCode:
+            res.status(406).json({error: uniqueViolation.description});
+            break;
+        default:
+            res.status(200);
+            break;
+    }
+
+    console.log(
+        `
+    ==================================================
+    ${req.method} ${req.url} HTTP/${req.httpVersion}
+    
+    Headers:
+    ${JSON.stringify(req.headers)}
+    
+    Requests body:
+    ${req.body}
+    ==================================================`
+    );
+});
+
+/*
+/post related
+ */
+
+// ==== POST new like ==================================================================================================
+app.post("/likes", async (req, res) => {
+    const queryResult = await dbService.createUser(
+        req.get("token"),
+        req.get("postId")
+    );
+
+    switch (queryResult) {
+        case undefined:
+            res.status(500).json({error: internalError.description});
+            break;
+        case badParameters.errorCode:
+            res.status(400).json({error: badParameters.description});
+            break;
+        case uniqueViolation.errorCode:
+            res.status(406).json({error: uniqueViolation.description});
+            break;
+        default:
+            res.json({
+                token: queryResult,
+            });
+            break;
+    }
+
+    console.log(
+        `
+    ==================================================
+    ${req.method} ${req.url} HTTP/${req.httpVersion}
+    
+    Headers:
+    ${JSON.stringify(req.headers)}
+    
+    Requests body:
+    ${req.body}
+    ==================================================`
+    );
+});
+
+// ==== GET likes =======================================================================================================
+app.get("/likes", async (req, res) => {
+    const queryResult = await dbService.getUserInfo(req.get("token"));
+
+    switch (queryResult) {
+        case undefined:
+            res.status(500).json({error: internalError.description});
+            break;
+        case badParameters.errorCode:
+            res.status(400).json({error: badParameters.description});
+            break;
+        case uniqueViolation.errorCode:
+            res.status(406).json({error: uniqueViolation.description});
+            break;
+        default:
+            res.json({
+                token: queryResult,
+            });
+            break;
+    }
+
+    console.log(
+        `
+    ==================================================
+    ${req.method} ${req.url} HTTP/${req.httpVersion}
+    
+    Headers:
+    ${JSON.stringify(req.headers)}
+    
+    Requests body:
+    ${req.body}
+    ==================================================`
+    );
+});
+
+// ==== DELETE like ====================================================================================================
+app.delete("/likes", async (req, res) => {
     const queryResult = await dbService.deleteUser(req.get("token"));
 
     switch (queryResult) {

@@ -46,15 +46,15 @@
   - Add like:
       postId, Token -> null
 - GET   
-    - All like  e
-      Token -> idPost, idLike
+    - All like:
+      Token -> postId, idLike
 - DELETE 
-  - remove like
-      postID, Token -> null
+  - Remove like:
+      postId, Token -> null
 
 
 <!-- Categories done -->
 ##Categories
 - GET
-  - All categories
+  - All categories:
     Token -> categories
