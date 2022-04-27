@@ -63,6 +63,7 @@ exports.createUser = async (
     password,
     dob,
     sex,
+    language,
     isAdvertiser
 ) => {
     if (!username || !mail || !password || !name || !surname || !dob || !sex || !isAdvertiser)
@@ -125,6 +126,67 @@ exports.deleteUser = async (token) => {
         console.log(`[${Date()}]\n[ERROR] Database Service deleteUser(): ${e}`);
     }
 };
+
+
+/**
+ * ==== POST RELATED ===================================================================================================
+ */
+// ==== create post in "posts" table ===================================================================================
+
+exports.createPost = async (token, description, img, tags, link) => {
+    if (!token || !img || !tags || !token) return badParameters.errorCode;
+    try {
+        const userId = await dbModule.query(
+            ``, //TODO restituisce lo userId in base al token
+            [token]
+        );
+
+        if (userId.length) return uniqueViolation.errorCode;
+
+        if(link){
+            return await dbModule.query(
+                "", //TODO inserisce un nuovo post
+                [userId, description, img, tags]
+            );
+        }else{
+            return await dbModule.query(
+                "", //TODO inserisce un nuovo AD
+                [userId, description, img, tags, link]
+            );
+        }
+    } catch (e) {
+        console.log(`[${Date()}]\n[ERROR] Database Service createLike(): ${e}`);
+    }
+};
+
+// ==== get post from  =================================================================================
+
+exports.getPost = async (token, filter) => {
+    if (!token || !filter) return badParameters.errorCode;
+
+};
+
+// ==== delete post in "posts" table ===================================================================================
+
+exports.deletePost = async (token, postId) => {
+    if (!token || !postId) return badParameters.errorCode;
+
+    try {
+        const userId = await dbModule.query(
+            ``, //TODO restituisce lo userId in base al token
+            [token]
+        );
+
+        if (userId.length) return uniqueViolation.errorCode;
+        return await dbModule.query(
+            "", //TODO disattiva/cancella il post
+            [postId]
+        );
+    } catch (e) {
+        console.log(`[${Date()}]\n[ERROR] Database Service deleteLike(): ${e}`);
+    }
+};
+
 
 /**
  * ==== LIKES RELATED ==================================================================================================
@@ -195,11 +257,11 @@ exports.deleteLike = async (token, idLikes) => {
 };
 
 /**
- * ==== CATEGORIES RELATED =============================================================================================
+ * ==== TAGS RELATED ===================================================================================================
  */
-// ==== get categories info in "categories" table ======================================================================
+// ==== get Tags info in "categories" table ======================================================================
 
-exports.getCategories = async (token) => {
+exports.getTags = async (token) => {
     if (!token) return badParameters.errorCode;
 
     try {
@@ -210,7 +272,7 @@ exports.getCategories = async (token) => {
 
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO recupera tutte le categorie
+            "", //TODO recupera tutte le Tags
             [userId]
         );
     } catch (e) {

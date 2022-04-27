@@ -15,11 +15,11 @@
 ##User
 - POST 
   - User Create User:
-    Name, Surname, Username, Mail, Password, DOB, Sex, isAdvertiser -> Token
+    Name, Surname, Username, Mail, Password, DOB, Sex, isAdvertiser,Language -> Token
   
 - GET
   - User get info:
-    Token -> Name, Surname, Username, Mail, DOB, Sex, isAdvertiser
+    Token -> Name, Surname, Username, Mail, DOB, Sex, isAdvertiser,Language
 
 - DELETE 
   - Remove User:
@@ -29,12 +29,10 @@
 ##Post
 - POST
     - Add post:
-        Description, img, Token, [categories] -> null
-    - Add insertion:
-        Description, img, Token, [categories], link -> null
-- GET 
-  - All post:
-      Token -> Description, img, date, viewNumber, idUser, [categories], nLike
+        Description, img, Token, [Tags], link? -> null
+ - GET 
+  - Y-F-S post:
+      Token, Filter -> Description, img, date, viewNumber, idUser, [Tags], nLike, postId
 - DELETE
   - Remove post:
         Token, postId -> null
