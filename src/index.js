@@ -200,7 +200,7 @@ app.delete("/user", async (req, res) => {
 
 // ==== POST new post ==================================================================================================
 app.post("/post", async (req, res) => {
-    const queryResult = await dbService.createUser(
+    const queryResult = await dbService.createPost(
         req.get("token"),
         req.get("description"),
         req.get("img"),
@@ -241,7 +241,7 @@ app.post("/post", async (req, res) => {
 
 // ==== GET post =======================================================================================================
 app.get("/post", async (req, res) => {
-    const queryResult = await dbService.createUser(
+    const queryResult = await dbService.getPost(
         req.get("token"),
         req.get("filter")
     );
@@ -279,7 +279,7 @@ app.get("/post", async (req, res) => {
 
 // ==== delete post ====================================================================================================
 app.delete("/post", async (req, res) => {
-    const queryResult = await dbService.createUser(
+    const queryResult = await dbService.deletePost(
         req.get("token"),
         req.get("postId")
     );
@@ -318,7 +318,7 @@ app.delete("/post", async (req, res) => {
 
 // ==== POST new like ==================================================================================================
 app.post("/like", async (req, res) => {
-    const queryResult = await dbService.createUser(
+    const queryResult = await dbService.createLike(
         req.get("token"),
         req.get("postId")
     );
@@ -356,7 +356,7 @@ app.post("/like", async (req, res) => {
 
 // ==== GET likes ======================================================================================================
 app.get("/like", async (req, res) => {
-    const queryResult = await dbService.getUserInfo(req.get("token"));
+    const queryResult = await dbService.getLike(req.get("token"));
 
     switch (queryResult) {
         case undefined:
@@ -391,7 +391,7 @@ app.get("/like", async (req, res) => {
 
 // ==== DELETE like ====================================================================================================
 app.delete("/like", async (req, res) => {
-    const queryResult = await dbService.deleteUser(req.get("token"));
+    const queryResult = await dbService.deleteLike(req.get("token"));
 
     switch (queryResult) {
         case undefined:
