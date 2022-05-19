@@ -14,14 +14,13 @@ exports.logIn = async (mail, password) => {
     if (!mail || !password) return badParameters.errorCode;
 
     try {
-        //si verifica solo l'esistenza della mail (la tabella ha la constraint UNIQUE sulla colonna mail)
         const infoUs = await dbModule.query(
-            ``, //TODO ottiene id utente e la password in base alla mail
+            `EXEC getUserbyEmail @mail = :mail`,
             [mail]
         );
         if (verify(password, infoUs["password"])) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO restituisce il token in base allo userId
+            "EXEC getToken @idUser :userId",
             [infoUs["userId"]]
         );
     } catch (e) {
@@ -36,13 +35,13 @@ exports.logOut = async (token) => {
 
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO chiude la sessione
+            "EXEC CloseSession @idUser = :userId",
             [userId]
         );
     } catch (e) {
@@ -70,13 +69,13 @@ exports.createUser = async (
         return badParameters.errorCode;
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base alla mail
+            `EXEC getUserbyEmail @mail = :mail`,
             [mail]
         );
         let passCript = generate(password);
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO inserisce un nuovo utente e ritorna il token
+            "EXEC insertUser @username = :username AND @mail = :mail AND @password = :passCript AND @name = :name AND @surname = :surname AND @dob = :dob AND @isAdvertiser = :isAdvertiser",
             [username, mail, passCript, name, surname, dob, sex, isAdvertiser]
         );
     } catch (e) {
@@ -90,15 +89,14 @@ exports.getUserInfo = async (token) => {
     if (!token) return badParameters.errorCode;
 
     try {
-        //si recupere l'id dalla tabella session(idToken, idUtente, Token)
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO recupera le informazioni dello User
+            "EXEC getUserInfo @userId = :userId",
             [userId]
         );
     } catch (e) {
@@ -113,13 +111,13 @@ exports.deleteUser = async (token) => {
 
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO disattiva/cancella tutto cio che è legato allo User
+            "EXEC deleteUser @userId = :userId",
             [userId]
         );
     } catch (e) {
@@ -137,7 +135,7 @@ exports.createPost = async (token, description, img, tags, link) => {
     if (!token || !img || !tags || !token) return badParameters.errorCode;
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
@@ -145,12 +143,12 @@ exports.createPost = async (token, description, img, tags, link) => {
 
         if(link){
             return await dbModule.query(
-                "", //TODO inserisce un nuovo post
+                "EXEC insertPost @userId = :userId AND @description = :description AND @img = :img AND @tags = :tags",
                 [userId, description, img, tags]
             );
         }else{
             return await dbModule.query(
-                "", //TODO inserisce un nuovo AD
+                "EXEC insertAd @userId = :userId AND @description = :description AND @img = :img AND @tags = :tags AND @link = :link",
                 [userId, description, img, tags, link]
             );
         }
@@ -173,13 +171,13 @@ exports.deletePost = async (token, postId) => {
 
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO disattiva/cancella il post
+            "EXEC deletePost @idPost = :postId",
             [postId]
         );
     } catch (e) {
@@ -197,16 +195,14 @@ exports.createLike = async (token, postId) => {
     if (!token || !postId) return badParameters.errorCode;
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
         if (userId.length) return uniqueViolation.errorCode;
 
-        //TODO controlla se esiste gia il like ( input: UserId, PostId)
-
         return await dbModule.query(
-            "", //TODO inserisce un nuovo like
+            "EXEC createLike @userId = :userId AND @postId = :postId ",
             [userId, postId]
         );
     } catch (e) {
@@ -221,13 +217,13 @@ exports.getLike = async (token) => {
 
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO recupera tutti gli id dei like e dei post associati
+            "EXEC getLike @userId : userId",
             [userId]
         );
     } catch (e) {
@@ -242,13 +238,13 @@ exports.deleteLike = async (token, idLikes) => {
 
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO disattiva/cancella il like
+            "EXEC deleteLike @idLikes = :idLikes",
             [idLikes]
         );
     } catch (e) {
@@ -266,13 +262,13 @@ exports.getTags = async (token) => {
 
     try {
         const userId = await dbModule.query(
-            ``, //TODO restituisce lo userId in base al token
+            `EXEC getUserIdbyToken @token = :token`,
             [token]
         );
 
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "", //TODO recupera tutte le Tags
+            "EXEC getTags @userId = :userId",
             [userId]
         );
     } catch (e) {
