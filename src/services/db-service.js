@@ -75,7 +75,7 @@ exports.createUser = async (
         let passCript = generate(password);
         if (userId.length) return uniqueViolation.errorCode;
         return await dbModule.query(
-            "EXEC insertUser @username = :username AND @mail = :mail AND @password = :passCript AND @name = :name AND @surname = :surname AND @dob = :dob AND @isAdvertiser = :isAdvertiser",
+            "EXEC insertUser @username = :username, @mail = :mail, @password = :passCript, @name = :name, @surname = :surname, @dob = :dob, @isAdvertiser = :isAdvertiser",
             [username, mail, passCript, name, surname, dob, sex, isAdvertiser]
         );
     } catch (e) {
@@ -143,12 +143,12 @@ exports.createPost = async (token, description, img, tags, link) => {
 
         if(link){
             return await dbModule.query(
-                "EXEC insertPost @userId = :userId AND @description = :description AND @img = :img AND @tags = :tags",
+                "EXEC insertPost @userId = :userId, @description = :description, @img = :img, @tags = :tags",
                 [userId, description, img, tags]
             );
         }else{
             return await dbModule.query(
-                "EXEC insertAd @userId = :userId AND @description = :description AND @img = :img AND @tags = :tags AND @link = :link",
+                "EXEC insertAd @userId = :userId, @description = :description, @img = :img, @tags = :tags, @link = :link",
                 [userId, description, img, tags, link]
             );
         }
@@ -202,7 +202,7 @@ exports.createLike = async (token, postId) => {
         if (userId.length) return uniqueViolation.errorCode;
 
         return await dbModule.query(
-            "EXEC createLike @userId = :userId AND @postId = :postId ",
+            "EXEC createLike @userId = :userId, @postId = :postId ",
             [userId, postId]
         );
     } catch (e) {
